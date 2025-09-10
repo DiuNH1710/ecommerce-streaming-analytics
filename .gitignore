@@ -1,3 +1,6 @@
+# Ignore the whole archive folder
+archive/
+
 # Python
 __pycache__/
 *.py[cod]

@@ -1,6 +1,4 @@
-create database if not exists ecommmerce;
 
-use ecommmerce;
 
 -- 1. Cloud warehouse compersion chart
 
@@ -19,7 +17,7 @@ CREATE TABLE sale_report (
       stock INT,
       category VARCHAR(255),
       size VARCHAR(50),
-      color VARCHAR(100),
+      color VARCHAR(100)
 );
 
 -- 3. P & L March 2021
@@ -99,7 +97,7 @@ CREATE TABLE International_sale_report(
 );
 
 -- 7. Expense IIGF
-CREATEE TABLE expense_iigf (
+CREATE TABLE expense_iigf (
       id SERIAL PRIMARY KEY,
       receipt_amount NUMERIC
 );
