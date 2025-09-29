@@ -2,9 +2,13 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy code
+COPY insert-data-postgresDB.py /app/
 
-COPY . .
+# Install dependencies
+RUN pip install --no-cache-dir psycopg2-binary pandas
 
-CMD ["python", "insert-data-postgresDB.py"]
+# Mount CSV folder từ host
+VOLUME ["/app/archive"]
+
+CMD ["python", "/app/insert-data-postgresDB.py"]

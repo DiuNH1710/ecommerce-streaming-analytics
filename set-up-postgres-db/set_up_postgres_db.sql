@@ -1,5 +1,8 @@
 
-
+CREATE TABLE IF NOT EXISTS import_state (
+    table_name TEXT PRIMARY KEY,
+    last_row_imported INT DEFAULT -1
+);
 
 -- 1. Sale Report
 

@@ -165,9 +165,13 @@ services:
     build: ./spark-consumer
     container_name: python-consumer
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+
     networks:
       - ecommerce-net
+    volumes:
+      - ./archive:/app/archive # Mount CSV vào container
 
 networks:
   ecommerce-net:
