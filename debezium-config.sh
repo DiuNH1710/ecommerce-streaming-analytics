@@ -17,7 +17,7 @@ create_connector() {
       \"database.port\": \"5432\",
       \"database.user\": \"postgres\",
       \"database.password\": \"postgres\",
-      \"database.dbname\": \"ecommerce_db\",
+      \"database.dbname\": \"ecommerce\",
       \"database.server.name\": \"postgres\",
       \"table.include.list\": \"public.$table_name\",
       \"topic.prefix\": \"cdc\",

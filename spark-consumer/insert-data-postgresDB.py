@@ -7,9 +7,9 @@ import threading
 
 # Database config 
 conn_details = {
-      'dbname': "postgres", 
+      'dbname': "ecommerce", 
       'user': 'postgres', 
-      'password': '123456', 
+      'password': 'postgres', 
       'host': 'postgres', 
       'port': '5432'
 }

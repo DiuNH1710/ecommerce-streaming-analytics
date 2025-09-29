@@ -161,6 +161,14 @@ services:
     networks:
       - ecommerce-net
 
+  python-consumer:
+    build: ./spark-consumer
+    container_name: python-consumer
+    depends_on:
+      - postgres
+    networks:
+      - ecommerce-net
+
 networks:
   ecommerce-net:
     name: ecommerce-net
