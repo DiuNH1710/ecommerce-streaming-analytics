@@ -2,6 +2,7 @@ import time
 import csv
 import psycopg2
 from psycopg2 import sql 
+import threading
 
 
 # Database config 
@@ -33,12 +34,12 @@ def connect_to_db():
 #     - columns: list tên cột tương ứng trong bảng
 #     - sleep_time: thời gian chờ giữa mỗi insert (giả lập streaming) 
 
-def insert_csv_to_table (conn, csv_path, table_name, columns, sleep_time = 2): 
+def insert_csv_to_table (conn, csv_path, table_name, columns, sleep_time = 1): 
     
       placeholders = ','.join(['%s']*len(columns))
       cols_formatted = ','.join(columns)
       insert_query = sql.SQL(
-            f"INSERT INTO {table_name} ({cols_formatted}) VALUE({placeholders})"
+            f"INSERT INTO {table_name} ({cols_formatted}) VALUES({placeholders})"
       )
       
       with open(csv_path, mode='r', encoding='utf-8') as file: 
@@ -58,20 +59,22 @@ def insert_csv_to_table (conn, csv_path, table_name, columns, sleep_time = 2):
                         conn.rollback()
                         
 
-def main (): 
-      conn = connect_to_db
-      if not conn: 
-            return 
-      
-      # 1️⃣ Sale Report
-      insert_csv_to_table(
-        conn,
-        "../archive/sale_report.csv",
-        "sale_report",
-        ["sku_code", "design_no", "stock", "category", "size", "color"]
-    )
-            # 2️⃣ P & L March 2021
-      insert_csv_to_table(
+def main():
+      conn = connect_to_db()
+      if not conn:
+            return
+
+      threads = []
+
+      threads.append(threading.Thread(target=insert_csv_to_table, args=(
+            conn,
+            "../archive/sale_report.csv",
+            "sale_report",
+            ["sku_code", "design_no", "stock", "category", "size", "color"],
+            1
+      )))
+
+      threads.append(threading.Thread(target=insert_csv_to_table, args=(
             conn,
             "../archive/pnl_march_2021.csv",
             "pnl_march_2021",
@@ -80,11 +83,11 @@ def main ():
                   "mrp_old", "final_mrp_old", "ajio_mrp", "amazon_mrp",
                   "amazon_fba_mrp", "flipkart_mrp", "limeroad_mrp",
                   "myntra_mrp", "paytm_mrp", "snapdeal_mrp"
-            ]
-      )
+            ],
+            1
+      )))
 
-      # 3️⃣ May 2022
-      insert_csv_to_table(
+      threads.append(threading.Thread(target=insert_csv_to_table, args=(
             conn,
             "../archive/may_2022.csv",
             "may_2022",
@@ -93,11 +96,11 @@ def main ():
                   "mrp_old", "final_mrp_old", "ajio_mrp", "amazon_mrp",
                   "amazon_fba_mrp", "flipkart_mrp", "limeroad_mrp",
                   "myntra_mrp", "paytm_mrp", "snapdeal_mrp"
-            ]
-      )
+            ],
+            1
+      )))
 
-      # 4️⃣ Amazon Sale Report
-      insert_csv_to_table(
+      threads.append(threading.Thread(target=insert_csv_to_table, args=(
             conn,
             "../archive/amazon_sale_report.csv",
             "amazon_sale_report",
@@ -107,21 +110,30 @@ def main ():
                   "courier_status", "qty", "currency", "amount", "ship_city",
                   "ship_state", "ship_postal_code", "ship_country", "promotion_ids",
                   "b2b", "fulfilled_by"
-            ]
-      )
+            ],
+            1
+      )))
 
-      # 5️⃣ International Sale Report
-      insert_csv_to_table(
+      threads.append(threading.Thread(target=insert_csv_to_table, args=(
             conn,
             "../archive/international_sale_report.csv",
             "international_sale_report",
             [
                   "style", "sku", "size", "date", "months", "customer", "pcs", "rate", "gross_amt"
-            ]
-      )
+            ],
+            1
+      )))
+
+      # 🚀 Start all threads
+      for t in threads:
+            t.start()
+
+      # ⏳ Wait for all to complete
+      for t in threads:
+            t.join()
 
       conn.close()
-      print("🎉 All CSV files imported successfully!")
+      print("🎉 All CSV files imported successfully in parallel!")
 
-      if __name__ == "__main__":
-            main()
+if __name__ == "__main__":
+      main()

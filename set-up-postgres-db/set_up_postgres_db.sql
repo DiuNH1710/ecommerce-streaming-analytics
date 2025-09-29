@@ -15,7 +15,7 @@ CREATE TABLE sale_report (
 
 -- 2. P & L March 2021
 CREATE TABLE pnl_march_2021 (
-      id SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     sku VARCHAR(50),
     style_id VARCHAR(50),
     catalog VARCHAR(100),
@@ -32,7 +32,7 @@ CREATE TABLE pnl_march_2021 (
     limeroad_mrp NUMERIC,
     myntra_mrp NUMERIC,
     paytm_mrp NUMERIC,
-    snapdeal_mrp NUMERIC,
+    snapdeal_mrp NUMERIC
 );
 
 -- 3. May 2022

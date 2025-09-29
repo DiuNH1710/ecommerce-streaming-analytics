@@ -27,23 +27,19 @@ create_connector() {
   echo -e "\nConnector $connector_name created for table $table_name"
 }
 
-# 1. Cloud warehouse comparison
-create_connector "cloud_warehouse_comparison_conn" "cloud_warehouse_comparison"
 
-# 2. Sale report
+# 1. Sale report
 create_connector "sale_report_conn" "sale_report"
 
-# 3. P & L March 2021
+# 2. P & L March 2021
 create_connector "pnl_march_2021_conn" "pnl_march_2021"
 
-# 4. May 2022
+# 3. May 2022
 create_connector "may_2022_conn" "may_2022"
 
-# 5. Amazon Sale Report
+# 4. Amazon Sale Report
 create_connector "amazon_sale_report_conn" "amazon_sale_report"
 
-# 6. International Sale Report
+# 5. International Sale Report
 create_connector "international_sale_report_conn" "international_sale_report"
 
-# 7. Expense IIGF
-create_connector "expense_iigf_conn" "expense_iigf"
